@@ -39,7 +39,7 @@ struct NumberRowView: View {
         HStack(spacing: 16) {
             ForEach(Array(visibleNumbersRange), id: \.self) { index in
                 Text("\(numbers[index])")
-                    .font(.title)
+                    .font(.system(.title, design: .monospaced))
                     .fontWeight(.medium)
                     .frame(width: 40, height: 40)
                     .foregroundColor(.primary) // すべての数字に同じ色を使用

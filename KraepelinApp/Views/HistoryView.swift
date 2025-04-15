@@ -96,7 +96,7 @@ struct HistoryView: View {
                         VStack(alignment: .leading) {
                             Text(result.formattedDate)
                                 .font(.headline)
-                            Text("正答率: \(Int(result.overallAccuracy * 100))%")
+                            Text("総合正答率: \(Int(result.overallAccuracy * 100))%")
                                 .font(.subheadline)
                         }
                         Spacer()

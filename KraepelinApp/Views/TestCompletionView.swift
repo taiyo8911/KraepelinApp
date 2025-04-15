@@ -11,7 +11,7 @@ struct TestCompletionView: View {
     @EnvironmentObject var viewModel: TestViewModel
     @Environment(\.dismiss) var dismiss
 
-    // アプリルートに戻るために使用
+    // アプリルートに戻るためのフラグ
     @State private var backToRoot = false
 
     var body: some View {

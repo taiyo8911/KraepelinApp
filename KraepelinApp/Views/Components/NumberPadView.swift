@@ -28,7 +28,7 @@ struct NumberPadView: View {
                             onNumberTapped(number)
                         }) {
                             Text("\(number)")
-                                .font(.title)
+                                .font(.system(.title, design: .monospaced))
                                 .fontWeight(.medium)
                                 .frame(minWidth: number == 0 ? 220 : 70, minHeight: 70)
                                 .background(Color.blue.opacity(0.1))
