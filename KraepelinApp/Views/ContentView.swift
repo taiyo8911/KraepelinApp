@@ -11,7 +11,7 @@ import SwiftUI
 // メインコンテンツビュー（画面遷移の管理）
 struct ContentView: View {
     @EnvironmentObject var appStateManager: AppStateManager
-    
+
     var body: some View {
         NavigationView {
             // 現在のアクティブ画面に基づいて表示する画面を切り替え
@@ -22,6 +22,8 @@ struct ContentView: View {
                 TutorialView()
             case .testStart:
                 TestStartView()
+            case .countdown:
+                CountdownView()
             case .test:
                 TestView()
                     .environmentObject(TestViewModel())

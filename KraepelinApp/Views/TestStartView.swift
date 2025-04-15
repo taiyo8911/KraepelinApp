@@ -71,7 +71,7 @@ struct TestStartView: View {
             Spacer()
 
             Button(action: {
-                appStateManager.activeScreen = .test
+                appStateManager.activeScreen = .countdown
             }) {
                 Text("検査を開始する")
                     .foregroundColor(.white)

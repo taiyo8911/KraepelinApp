@@ -39,6 +39,7 @@ enum ActiveScreen {
     case home
     case tutorial
     case testStart
+    case countdown
     case test
     case history
 }
