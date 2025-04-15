@@ -87,7 +87,8 @@ struct HistoryView: View {
 
     private var listView: some View {
         List {
-            ForEach(userDefaultsManager.testResults) { result in
+            // 履歴のリスト（逆順に並び替え）
+            ForEach(userDefaultsManager.testResults.sorted(by: { $0.date > $1.date })) { result in
                 Button(action: {
                     selectedResult = result
                 }) {
