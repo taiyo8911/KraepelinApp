@@ -42,7 +42,7 @@ struct NumberRowView: View {
                     .font(.system(.title, design: .monospaced))
                     .fontWeight(.medium)
                     .frame(width: 40, height: 40)
-                    .foregroundColor(.primary) // すべての数字に同じ色を使用
+                    .foregroundColor(.primary)
             }
         }
         .padding(.horizontal)
@@ -61,13 +61,13 @@ struct NumberRowView: View {
                         Group {
                             if index == currentIndex {
                                 HStack(spacing: 0) {
-                                    Spacer() // 左側のスペース
+                                    Spacer()
 
                                     Circle()
                                         .fill(Color.red)
                                         .frame(width: 8, height: 8)
 
-                                    Spacer() // 右側のスペース
+                                    Spacer()
                                 }
                                 .frame(width: 56) // 数字の幅(40) + 間隔(16)
                                 .offset(x: 28) // (数字の幅 + 間隔) / 2

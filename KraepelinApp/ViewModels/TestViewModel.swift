@@ -23,7 +23,7 @@ class TestViewModel: ObservableObject {
     // タイマー関連
     private var timer: Timer?
     private var startTime: Date?
-    private let setDuration: TimeInterval = 3 // 1分=60秒
+    private let setDuration: TimeInterval = 30 // 1分=60秒
 
     // 検査データ
     private var correctAnswers: Int = 0
@@ -31,7 +31,7 @@ class TestViewModel: ObservableObject {
     private var setResults: [Double] = [] // 各セットの正答率
 
     // 検査の総セット数 - publicに変更
-    let totalSets: Int = 3
+    let totalSets: Int = 6
 
     // コールバック
     var onSetComplete: (() -> Void)?
