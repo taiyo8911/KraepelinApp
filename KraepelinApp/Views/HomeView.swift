@@ -20,9 +20,10 @@ struct HomeView: View {
                 .frame(width: 100, height: 100)
                 .foregroundColor(.blue)
 
-            Text("クレペリン検査")
+            Text("クレペリン検査練習")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 
             Spacer()
 
@@ -33,6 +34,7 @@ struct HomeView: View {
                     HStack {
                         Image(systemName: "play.fill")
                             .foregroundColor(.white)
+
                         Text("検査を始める")
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
@@ -95,6 +97,8 @@ struct HomeView: View {
             .padding(.bottom)
         }
         .padding()
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+
     }
 }
 

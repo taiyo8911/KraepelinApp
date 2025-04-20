@@ -12,6 +12,8 @@ struct TestResult: Identifiable, Codable {
     let date: Date
     let overallAccuracy: Double // 全体の正答率
     let setAccuracies: [Double] // 各セットの正答率
+    let correctCounts: [Int] // 各セットの正解数
+    let totalCounts: [Int] // 各セットの問題数
 
     var formattedDate: String {
         let formatter = DateFormatter()
@@ -21,10 +23,12 @@ struct TestResult: Identifiable, Codable {
         return formatter.string(from: date)
     }
 
-    init(id: UUID = UUID(), date: Date = Date(), overallAccuracy: Double, setAccuracies: [Double]) {
+    init(id: UUID = UUID(), date: Date = Date(), overallAccuracy: Double, setAccuracies: [Double], correctCounts: [Int], totalCounts: [Int]) {
         self.id = id
         self.date = date
         self.overallAccuracy = overallAccuracy
         self.setAccuracies = setAccuracies
+        self.correctCounts = correctCounts
+        self.totalCounts = totalCounts
     }
 }

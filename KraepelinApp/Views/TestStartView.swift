@@ -48,13 +48,13 @@ struct TestStartView: View {
                 NoticeRow(
                     icon: "iphone.and.arrow.forward",
                     title: "中断禁止",
-                    description: "検査中は他のアプリを使用したり、画面を閉じたりしないでください"
+                    description: "検査中は画面を閉じたりしないでください"
                 )
 
                 NoticeRow(
                     icon: "bell.slash.fill",
                     title: "通知をオフに",
-                    description: "検査中は電話やメッセージなどの通知をオフにすることをお勧めします"
+                    description: "検査中は通知をオフにすることをお勧めします"
                 )
 
                 NoticeRow(
@@ -67,8 +67,7 @@ struct TestStartView: View {
             .background(Color.blue.opacity(0.1))
             .cornerRadius(10)
             .padding(.horizontal)
-
-            Spacer()
+            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
             Button(action: {
                 appStateManager.activeScreen = .countdown
@@ -83,7 +82,10 @@ struct TestStartView: View {
             }
             .padding(.horizontal)
             .padding(.bottom)
+
+            Spacer()
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 }
 
@@ -105,6 +107,7 @@ struct NoticeRow: View {
                 Text(description)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }

@@ -25,10 +25,11 @@ struct TestView: View {
                 NumberRowView(numbers: viewModel.currentNumbers, currentIndex: viewModel.currentIndex)
                     .padding()
 
-                Text("隣り合う数字を足してください")
+                Text("数字を入力してください")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .padding()
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
                 Spacer()
 
@@ -37,6 +38,8 @@ struct TestView: View {
                     viewModel.inputAnswer(number)
                 })
                 .padding(.bottom)
+
+                Spacer()
             }
 
             // セット切り替え画面のオーバーレイ

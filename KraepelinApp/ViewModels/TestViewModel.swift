@@ -6,11 +6,15 @@
 //
 
 
+
+
 import Foundation
 import SwiftUI
 import Combine
 
 class TestViewModel: ObservableObject {
+    // MARK: - プロパティ
+
     // 検査関連のプロパティ
     @Published var currentNumbers: [Int] = []
     @Published var currentIndex: Int = 0
@@ -20,43 +24,45 @@ class TestViewModel: ObservableObject {
     // 検査完了フラグ
     @Published var isTestComplete: Bool = false
 
+    // 検査の総セット数
+    let totalSets: Int = 6 // セット数の設定
+
     // タイマー関連
     private var timer: Timer?
     private var startTime: Date?
-    private let setDuration: TimeInterval = 30 // 1分=60秒
+    private let setDuration: TimeInterval = 30 // 1セットの時間（秒）
 
     // 検査データ
     private var correctAnswers: Int = 0
     private var totalAnswers: Int = 0
     private var setResults: [Double] = [] // 各セットの正答率
 
-    // 検査の総セット数 - publicに変更
-    let totalSets: Int = 6
+    // 各セットの正解数と問題数を記録
+    private var setCorrectCounts: [Int] = []
+    private var setTotalCounts: [Int] = []
 
     // コールバック
     var onSetComplete: (() -> Void)?
+
+    // MARK: - 初期化と終了処理
 
     // 初期化
     init() {
         generateNumbers()
     }
 
+    // デストラクタでタイマーを確実に破棄
+    deinit {
+        stopTimer()
+    }
+
+    // MARK: - 検査制御メソッド
+
     // 検査開始
     func startTest() {
         resetTestData()
         isTestComplete = false
         startTimer()
-    }
-
-    // 現在のセットの結果を保存
-    func saveCurrentSetResult() {
-        if totalAnswers > 0 {
-            let accuracy = Double(correctAnswers) / Double(totalAnswers)
-            setResults.append(accuracy)
-        } else {
-            setResults.append(0.0)
-        }
-        print("現在のセット(\(currentSetIndex))の正答率: \(setResults.last ?? 0.0)")
     }
 
     // 次のセットへ移動
@@ -86,6 +92,22 @@ class TestViewModel: ObservableObject {
         startTimer()
     }
 
+    // 検査データのリセット
+    private func resetTestData() {
+        currentSetIndex = 0
+        correctAnswers = 0
+        totalAnswers = 0
+        currentIndex = 0
+        lastInput = nil
+        setResults = []
+        // 追加
+        setCorrectCounts = []
+        setTotalCounts = []
+        generateNumbers()
+    }
+
+    // MARK: - ユーザー入力処理
+
     // 答えの入力処理
     func inputAnswer(_ number: Int) {
         // 入力できるのは検査中のみ
@@ -113,6 +135,33 @@ class TestViewModel: ObservableObject {
         }
     }
 
+    // MARK: - データ生成
+
+    // ランダムな数字列の生成
+    private func generateNumbers() {
+        // 3から9の範囲で116個の1桁の整数をランダムに生成
+        currentNumbers = (0..<116).map { _ in Int.random(in: 3...9) }
+    }
+
+
+    // MARK: - 結果処理
+
+    // 現在のセットの結果を保存
+    func saveCurrentSetResult() {
+        if totalAnswers > 0 {
+            let accuracy = Double(correctAnswers) / Double(totalAnswers)
+            setResults.append(accuracy)
+            // 正解数と問題数を記録
+            setCorrectCounts.append(correctAnswers)
+            setTotalCounts.append(totalAnswers)
+        } else {
+            setResults.append(0.0)
+            setCorrectCounts.append(0)
+            setTotalCounts.append(0)
+        }
+        print("現在のセット(\(currentSetIndex))の正答率: \(setResults.last ?? 0.0), 正解数: \(correctAnswers)/\(totalAnswers)")
+    }
+
     // 検査結果の生成
     func generateTestResult() -> TestResult {
         // タイマーを停止
@@ -121,9 +170,11 @@ class TestViewModel: ObservableObject {
         // デバッグ出力
         print("生成される検査結果 - セット数: \(setResults.count), 各セットの正答率: \(setResults)")
 
-        // 足りないセットを0.0で埋める
+        // 足りないセットを埋める
         while setResults.count < totalSets {
             setResults.append(0.0)
+            setCorrectCounts.append(0)
+            setTotalCounts.append(0)
         }
 
         // 全体の正答率を計算
@@ -137,15 +188,13 @@ class TestViewModel: ObservableObject {
             id: UUID(),
             date: Date(),
             overallAccuracy: totalAccuracy,
-            setAccuracies: setResults
+            setAccuracies: setResults,
+            correctCounts: setCorrectCounts,
+            totalCounts: setTotalCounts
         )
     }
 
-    // ランダムな数字列の生成
-    private func generateNumbers() {
-        // 30個程度の一桁数字をランダムに生成
-        currentNumbers = (0..<30).map { _ in Int.random(in: 0...9) }
-    }
+    // MARK: - タイマー管理
 
     // タイマーの開始
     private func startTimer() {
@@ -168,21 +217,5 @@ class TestViewModel: ObservableObject {
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
-    }
-
-    // 検査データのリセット
-    private func resetTestData() {
-        currentSetIndex = 0
-        correctAnswers = 0
-        totalAnswers = 0
-        currentIndex = 0
-        lastInput = nil
-        setResults = []
-        generateNumbers()
-    }
-
-    // デストラクタでタイマーを確実に破棄
-    deinit {
-        stopTimer()
     }
 }

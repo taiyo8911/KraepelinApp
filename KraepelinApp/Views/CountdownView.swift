@@ -26,6 +26,7 @@ struct CountdownView: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.blue)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility3)
 
                 // カウントダウン数字と「はじめ」の表示
                 if showStart {

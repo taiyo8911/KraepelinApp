@@ -14,7 +14,7 @@ struct TutorialView: View {
     private let tutorialPages = [
         TutorialPage(
             title: "クレペリン検査とは",
-            description: "クレペリン検査は、一連の一桁の数字を足し算することで、持続的な注意力や作業能力を測定する検査です。",
+            description: "クレペリン検査は、一連の1桁の数字を足し算することで、持続的な注意力や作業能力を測定する検査です。",
             image: "number.circle"
         ),
         TutorialPage(
@@ -53,6 +53,8 @@ struct TutorialView: View {
             TabView(selection: $currentPage) {
                 ForEach(0..<tutorialPages.count, id: \.self) { index in
                     VStack(spacing: 30) {
+                        Spacer()
+
                         Image(systemName: tutorialPages[index].image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -95,6 +97,7 @@ struct TutorialView: View {
             }
             .padding()
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 }
 

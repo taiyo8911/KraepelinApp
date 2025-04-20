@@ -83,6 +83,7 @@ struct HistoryView: View {
             .padding(.top, 10)
         }
         .padding()
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
     private var listView: some View {
@@ -108,12 +109,15 @@ struct HistoryView: View {
             }
             .onDelete(perform: deleteItem)
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+
     }
 
     private func deleteItem(at offsets: IndexSet) {
         userDefaultsManager.deleteTestResults(at: offsets)
     }
 }
+
 
 struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
