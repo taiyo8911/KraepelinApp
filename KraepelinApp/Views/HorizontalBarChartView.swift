@@ -68,6 +68,14 @@ struct HorizontalBarChartView: View {
                         .frame(width: CGFloat(correctCount) / CGFloat(maxCount) * barWidth, height: barHeight)
                         .cornerRadius(4)
                 }
+
+                // 正解数ラベル
+                if let maxCount = totalCounts.max(), maxCount > 0  {
+                    Text("\(correctCount)")
+                        .font(.subheadline)
+                        .frame(width: CGFloat(correctCount) / CGFloat(maxCount) * barWidth - 6, alignment: .trailing)
+                        .foregroundColor(.white)
+                }
             }
             .frame(width: barWidth)
 
