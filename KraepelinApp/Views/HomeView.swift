@@ -81,10 +81,6 @@ struct HomeView: View {
 
             Spacer()
 
-            Text("Version 1.0.0")
-                .font(.caption)
-                .foregroundColor(.secondary)
-
             Button(action: {
                 // プライバシーポリシーへのリンク
                  UIApplication.shared.open(URL(string: "https://taiyo8911.github.io/KraepelinApp/")!)
@@ -95,6 +91,8 @@ struct HomeView: View {
                     .underline()
             }
             .padding(.bottom)
+            
+
         }
         .padding()
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)

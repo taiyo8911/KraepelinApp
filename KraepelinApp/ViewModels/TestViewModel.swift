@@ -25,12 +25,12 @@ class TestViewModel: ObservableObject {
     @Published var isTestComplete: Bool = false
 
     // 検査の総セット数
-    let totalSets: Int = 15 // セット数の設定
+    let totalSets: Int = 3 // セット数の設定
 
     // タイマー関連
     private var timer: Timer?
     private var startTime: Date?
-    private let setDuration: TimeInterval = 60 // 1セットの時間（秒）
+    private let setDuration: TimeInterval = 5 // 1セットの時間（秒）
 
     // 検査データ
     private var correctAnswers: Int = 0
