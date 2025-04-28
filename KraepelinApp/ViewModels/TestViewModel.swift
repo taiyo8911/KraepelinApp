@@ -25,7 +25,10 @@ class TestViewModel: ObservableObject {
     @Published var isTestComplete: Bool = false
 
     // 検査の総セット数
-    let totalSets: Int = 3 // セット数の設定
+    var totalSets: Int {
+        return UserDefaultsManager.shared.testSetsCount
+    }
+//    let totalSets: Int = 3 // セット数の設定
 
     // タイマー関連
     private var timer: Timer?

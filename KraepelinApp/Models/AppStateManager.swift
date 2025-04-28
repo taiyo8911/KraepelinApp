@@ -42,4 +42,5 @@ enum ActiveScreen {
     case countdown
     case test
     case history
+    case settings
 }

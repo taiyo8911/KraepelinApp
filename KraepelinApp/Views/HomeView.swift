@@ -76,6 +76,22 @@ struct HomeView: View {
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(10)
                 }
+
+                Button(action: {
+                    appStateManager.activeScreen = .settings
+                }) {
+                    HStack {
+                        Image(systemName: "gear")
+                            .foregroundColor(.blue)
+                        Text("設定")
+                            .foregroundColor(.blue)
+                            .fontWeight(.semibold)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(10)
+                }
             }
             .padding(.horizontal)
 

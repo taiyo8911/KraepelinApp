@@ -29,7 +29,10 @@ struct ContentView: View {
                     .environmentObject(TestViewModel())
             case .history:
                 HistoryView()
+            case .settings:
+                SettingsView()
             }
+
         }
     }
 }
