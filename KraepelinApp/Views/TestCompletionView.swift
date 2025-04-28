@@ -11,8 +11,18 @@ struct TestCompletionView: View {
     @EnvironmentObject var viewModel: TestViewModel
     @Environment(\.dismiss) var dismiss
 
-    // アプリルートに戻るためのフラグ
-    @State private var backToRoot = false
+    // 結果を生成して保持
+    @State private var testResult: TestResult
+
+    init() {
+        // 初期化時は空のTestResultを作成
+        _testResult = State(initialValue: TestResult(
+            overallAccuracy: 0,
+            setAccuracies: [],
+            correctCounts: [],
+            totalCounts: []
+        ))
+    }
 
     var body: some View {
         VStack(spacing: 30) {
@@ -32,24 +42,22 @@ struct TestCompletionView: View {
                 .font(.title3)
                 .padding()
 
-            Button("ホームに戻る") {
-                // 結果を保存
-                let result = viewModel.generateTestResult()
-                UserDefaultsManager.shared.addTestResult(result)
-
-                // 全ての画面を閉じる
-                dismiss()
+            NavigationLink(destination: DetailView(testResult: testResult)) {
+                Text("結果を見る")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(width: 200)
+                    .background(Color.blue)
+                    .cornerRadius(10)
             }
-            .font(.headline)
-            .foregroundColor(.white)
-            .padding()
-            .frame(width: 200)
-            .background(Color.blue)
-            .cornerRadius(10)
         }
         .padding()
         .onAppear {
-            print("TestCompletionView appeared")
+            // onAppearで結果を生成
+            testResult = viewModel.generateTestResult()
+            // 結果を保存
+            UserDefaultsManager.shared.addTestResult(testResult)
         }
     }
 }

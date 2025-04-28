@@ -88,12 +88,14 @@ struct TestView: View {
                             .font(.title3)
                             .padding()
 
-                        Button("ホームに戻る") {
+                        Button("結果を見る") {
                             // 検査結果を保存
                             UserDefaultsManager.shared.addTestResult(result)
 
-                            // ホーム画面に戻る
-                            appStateManager.returnToHome()
+                            // 検査結果の詳細画面に遷移するために、新しい詳細画面をフルスクリーン表示
+                            appStateManager.activeScreen = .detail
+                            // 遷移先で結果を見るための最新の結果IDを保存
+                            appStateManager.lastResultId = result.id
                         }
                         .font(.headline)
                         .foregroundColor(.white)

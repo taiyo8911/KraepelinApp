@@ -11,7 +11,15 @@ import Charts
 
 struct DetailView: View {
     // MARK: - プロパティ
+    // 以下のプロパティを追加
+    @Environment(\.presentationMode) var presentationMode
+    // ダイアログとして表示されている場合の識別フラグ
+    var isModal: Bool = false
+
+    @EnvironmentObject var appStateManager: AppStateManager
+
     @Environment(\.dismiss) var dismiss
+
     let testResult: TestResult
 
     // 動的フォントサイズの制限値
@@ -22,11 +30,26 @@ struct DetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                backButton
+                // 戻るボタンを条件付きで表示
+                if isModal {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("戻る")
+                        }
+                    }
+                    .padding(.bottom, 8)
+                    .dynamicTypeSize(...maxDynamicTypeSize)
+                }
+
                 testSummarySection
                 chartSection
             }
             .padding()
+
+            VStack(alignment: .center) {
+                homeButton
+            }
         }
         .navigationTitle("検査結果詳細")
         .navigationBarTitleDisplayMode(.inline)
@@ -96,6 +119,24 @@ struct DetailView: View {
             )
             .frame(height: graphHeight)
             .padding(.bottom, 16)
+        }
+    }
+
+    // ホームに戻るボタン
+    private var homeButton: some View {
+        VStack() {
+            Button(action: {
+                appStateManager.activeScreen = .home
+            }) {
+                Text("ホームに戻る")
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding(.top, 10)
         }
     }
 

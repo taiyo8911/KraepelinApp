@@ -12,6 +12,8 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var appStateManager: AppStateManager
 
+    @ObservedObject private var userDefaultsManager = UserDefaultsManager.shared
+
     var body: some View {
         NavigationView {
             // 現在のアクティブ画面に基づいて表示する画面を切り替え
@@ -31,6 +33,17 @@ struct ContentView: View {
                 HistoryView()
             case .settings:
                 SettingsView()
+            case .detail:
+                if let resultId = appStateManager.lastResultId,
+                   let result = userDefaultsManager.testResults.first(where: { $0.id == resultId }) {
+                    DetailView(testResult: result)
+                } else {
+                    // 結果が見つからない場合はホームに戻る
+                    Text("結果が見つかりません")
+                        .onAppear {
+                            appStateManager.activeScreen = .home
+                        }
+                }
             }
 
         }

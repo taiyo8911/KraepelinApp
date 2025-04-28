@@ -40,12 +40,6 @@ struct TestStartView: View {
 
             VStack(alignment: .leading, spacing: 15) {
                 NoticeRow(
-                    icon: "clock.fill",
-                    title: "検査時間",
-                    description: "1分×15セットの合計15分間です"
-                )
-
-                NoticeRow(
                     icon: "iphone.and.arrow.forward",
                     title: "中断禁止",
                     description: "検査中は画面を閉じたりしないでください"

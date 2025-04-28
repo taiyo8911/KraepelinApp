@@ -12,7 +12,10 @@ class AppStateManager: ObservableObject {
     
     // アプリの画面遷移状態
     @Published var activeScreen: ActiveScreen = .home
-    
+
+    // 最後に表示した検査結果のID（詳細画面で使用）
+    @Published var lastResultId: UUID?
+
     // 検査終了後に保存すべき結果
     private var pendingTestResult: TestResult?
     
@@ -43,4 +46,5 @@ enum ActiveScreen {
     case test
     case history
     case settings
+    case detail
 }
