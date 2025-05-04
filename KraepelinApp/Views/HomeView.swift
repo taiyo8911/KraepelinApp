@@ -18,7 +18,6 @@ struct HomeView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 100, height: 100)
-                .foregroundColor(.blue)
 
             Text("クレペリン検査練習")
                 .font(.largeTitle)
@@ -33,15 +32,14 @@ struct HomeView: View {
                 }) {
                     HStack {
                         Image(systemName: "play.fill")
-                            .foregroundColor(.white)
 
                         Text("検査を始める")
-                            .foregroundColor(.white)
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .background(Color.green)
                     .cornerRadius(10)
                 }
 
@@ -50,14 +48,14 @@ struct HomeView: View {
                 }) {
                     HStack {
                         Image(systemName: "info.circle")
-                            .foregroundColor(.blue)
+
                         Text("チュートリアル")
-                            .foregroundColor(.blue)
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.green)
+                    .background(Color.green.opacity(0.1))
                     .cornerRadius(10)
                 }
 
@@ -66,14 +64,13 @@ struct HomeView: View {
                 }) {
                     HStack {
                         Image(systemName: "clock.arrow.circlepath")
-                            .foregroundColor(.blue)
                         Text("履歴を見る")
-                            .foregroundColor(.blue)
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.green)
+                    .background(Color.green.opacity(0.1))
                     .cornerRadius(10)
                 }
 
@@ -82,14 +79,13 @@ struct HomeView: View {
                 }) {
                     HStack {
                         Image(systemName: "gear")
-                            .foregroundColor(.blue)
                         Text("設定")
-                            .foregroundColor(.blue)
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.green)
+                    .background(Color.green.opacity(0.1))
                     .cornerRadius(10)
                 }
             }
@@ -103,16 +99,14 @@ struct HomeView: View {
             }) {
                 Text("プライバシーポリシー")
                     .font(.caption)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.green)
                     .underline()
             }
             .padding(.bottom)
-            
-
         }
         .padding()
+        .foregroundColor(.green)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-
     }
 }
 

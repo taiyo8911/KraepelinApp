@@ -59,7 +59,7 @@ struct TutorialView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 120, height: 120)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.green)
 
                         Text(tutorialPages[index].title)
                             .font(.title)
@@ -92,7 +92,7 @@ struct TutorialView: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.green)
                     .cornerRadius(10)
             }
             .padding()

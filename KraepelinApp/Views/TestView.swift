@@ -58,7 +58,7 @@ struct TestView: View {
                     VStack {
                         Text("終了")
                             .font(.system(size: 60, weight: .bold))
-                            .foregroundColor(.blue)
+                            .foregroundColor(.green)
                     }
                 }
                 .transition(.opacity)
@@ -101,7 +101,7 @@ struct TestView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(width: 200)
-                        .background(Color.blue)
+                        .background(Color.green)
                         .cornerRadius(10)
                     }
                     .padding()

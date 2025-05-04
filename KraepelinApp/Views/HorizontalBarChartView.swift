@@ -64,7 +64,7 @@ struct HorizontalBarChartView: View {
                 // 正解数バー
                 if let maxCount = totalCounts.max(), maxCount > 0 {
                     Rectangle()
-                        .fill(Color.blue.opacity(0.7))
+                        .fill(Color.green.opacity(0.7))
                         .frame(width: CGFloat(correctCount) / CGFloat(maxCount) * barWidth, height: barHeight)
                         .cornerRadius(4)
                 }
@@ -74,7 +74,7 @@ struct HorizontalBarChartView: View {
                     Text("\(correctCount)")
                         .font(.subheadline)
                         .frame(width: CGFloat(correctCount) / CGFloat(maxCount) * barWidth - 6, alignment: .trailing)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                 }
             }
             .frame(width: barWidth)
@@ -97,8 +97,6 @@ struct HorizontalBarChartView_Previews: PreviewProvider {
             correctCounts: [18, 16, 14, 17, 19, 12, 15, 13, 16],
             totalCounts: [20, 20, 20, 20, 20, 20, 20, 20, 20]
         )
-        .previewLayout(.sizeThatFits)
         .padding()
-        .frame(height: 300)
     }
 }

@@ -31,7 +31,7 @@ struct NumberPadView: View {
                                 .font(.system(.title, design: .monospaced))
                                 .fontWeight(.medium)
                                 .frame(minWidth: number == 0 ? 220 : 70, minHeight: 70)
-                                .background(Color.blue.opacity(0.1))
+                                .background(Color.green.opacity(0.1))
                                 .foregroundColor(.primary)
                                 .cornerRadius(10)
                         }

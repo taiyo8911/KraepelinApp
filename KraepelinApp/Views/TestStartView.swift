@@ -58,7 +58,7 @@ struct TestStartView: View {
                 )
             }
             .padding()
-            .background(Color.blue.opacity(0.1))
+            .background(Color.green.opacity(0.1))
             .cornerRadius(10)
             .padding(.horizontal)
             .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -71,7 +71,7 @@ struct TestStartView: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.green)
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -91,7 +91,7 @@ struct NoticeRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
             Image(systemName: icon)
-                .foregroundColor(.blue)
+                .foregroundColor(.green)
                 .frame(width: 24, height: 24)
 
             VStack(alignment: .leading, spacing: 4) {

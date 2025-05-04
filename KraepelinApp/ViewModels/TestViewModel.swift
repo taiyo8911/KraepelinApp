@@ -84,7 +84,7 @@ class TestViewModel: ObservableObject {
     ///   - numberSequenceLength: 生成する数字列の長さ
     ///   - numberRange: 生成する数字の範囲
     init(userDefaultsManager: UserDefaultsManagerProtocol = UserDefaultsManager.shared,
-         setDuration: TimeInterval = 5,
+         setDuration: TimeInterval = 60,
          numberSequenceLength: Int = 116,
          numberRange: ClosedRange<Int> = 3...9) {
 

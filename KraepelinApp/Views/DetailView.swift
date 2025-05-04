@@ -132,7 +132,7 @@ struct DetailView: View {
                     .fontWeight(.semibold)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
-                    .background(Color.blue)
+                    .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }

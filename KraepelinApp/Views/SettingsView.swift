@@ -5,32 +5,46 @@
 //  Created by Taiyo KOSHIBA on 2025/04/28.
 //
 
-
 import SwiftUI
 
 struct SettingsView: View {
+    // MARK: - プロパティ
     @EnvironmentObject var appStateManager: AppStateManager
-
-    // 内部状態としてセット数を保持
     @State private var selectedSetsCount: Double
 
+    // 定数
+    private let minSetsCount: Double = 1 // 設定できるセット数の最小値
+    private let maxSetsCount: Double = 15 // 設定できるセット数の最大値
+    private let containerWidth: CGFloat = UIScreen.main.bounds.width * 0.8
+
+    // MARK: - 初期化
     init() {
-        // 初期値を UserDefaults から取得
         let savedCount = UserDefaultsManager.shared.getTestSetsCount()
         _selectedSetsCount = State(initialValue: Double(savedCount))
     }
 
-    // 設定できるセット数の最小値
-    private let minSetsCount: Double = 1
-
-    // 設定できるセット数の最大値
-    private let maxSetsCount: Double = 15
-
-
+    // MARK: - ビュー
     var body: some View {
         VStack(spacing: 30) {
-            // ヘッダー
-            HStack {
+            navigationBar
+            settingsSection
+            descriptionSection
+            Spacer()
+        }
+        .padding()
+        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+    }
+
+    // MARK: - コンポーネント
+    // ナビゲーションバー
+    private var navigationBar: some View {
+        VStack {
+
+        }
+        // ナビゲーションバーのタイトル
+        .navigationTitle("設定")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
                     appStateManager.activeScreen = .home
                 }) {
@@ -39,92 +53,120 @@ struct SettingsView: View {
                         Text("戻る")
                     }
                 }
-                .padding()
-
-                Spacer()
             }
-
-
-            // セット数設定
-            VStack() {
-                Text("セット数の設定")
-                    .font(.title2)
-                    .fontWeight(.bold)
-
-                HStack {
-                    // マイナスボタン
-                    Button(action: {
-                        // セット数を減らす
-                        if selectedSetsCount > minSetsCount {
-                            selectedSetsCount -= 1
-                        }
-                    }) {
-                        Image(systemName: "minus.circle.fill")
-                            .foregroundColor(.red)
-                            .font(.title)
-                    }
-                    .padding(20)
-
-                    Text("\(Int(selectedSetsCount))")
-                        .font(.title)
-
-                    // プラスボタン
-                    Button(action: {
-                        // セット数を増やす
-                        if selectedSetsCount < maxSetsCount {
-                            selectedSetsCount += 1
-                        }
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.green)
-                            .font(.title)
-                    }
-                    .padding(20)
-                }
-
-                Button(action: {
-                    // セット数を保存
-                    UserDefaultsManager.shared.saveTestSetsCount(Int(selectedSetsCount))
-
-                    // 画面遷移
-                    appStateManager.activeScreen = .home
-                }) {
-                    Text("設定を保存")
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
-                .padding(.top, 10)
-            }
-            .frame(width: UIScreen.main.bounds.width * 0.8)
-            .padding()
-            .background(Color.blue.opacity(0.1))
-            .cornerRadius(10)
-
-//            Spacer()
-
-            // 説明
-            VStack(alignment: .leading, spacing: 10) {
-                Text("セット数について")
-                    .font(.headline)
-
-                Text("本来のクレペリン検査は、1分×15セット×2回で行われますが、このアプリでは練習用に少ないセット数に設定することができます。")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            .frame(width: UIScreen.main.bounds.width * 0.8)
-            .padding()
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(10)
-
-            Spacer()
         }
-        .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+
+    }
+
+    // 設定セクション
+    private var settingsSection: some View {
+        VStack {
+            Text("セット数の設定")
+                .font(.title2)
+                .fontWeight(.bold)
+
+            counterControl
+
+            saveButton
+        }
+        .frame(width: containerWidth)
+        .padding()
+        .background(Color.green.opacity(0.1))
+        .cornerRadius(10)
+    }
+
+    // カウンター制御
+    private var counterControl: some View {
+        HStack {
+            CounterButton(
+                action: decrementCount,
+                systemName: "minus.circle.fill",
+                color: .red
+            )
+
+            Text("\(Int(selectedSetsCount))")
+                .font(.title)
+
+            CounterButton(
+                action: incrementCount,
+                systemName: "plus.circle.fill",
+                color: .blue
+            )
+        }
+    }
+
+    // 保存ボタン
+    private var saveButton: some View {
+        Button(action: saveSettings) {
+            Text("設定を保存")
+                .foregroundColor(.white)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color.green)
+                .cornerRadius(8)
+        }
+        .padding(.top, 10)
+    }
+
+    // 説明セクション
+    private var descriptionSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("セット数について")
+                .font(.headline)
+
+            Text("本来のクレペリン検査は、1分×15セット×2回で行われますが、このアプリでは練習用に少ないセット数に設定することができます。")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+        }
+        .frame(width: containerWidth)
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(10)
+    }
+
+    // MARK: - アクション
+
+    private func decrementCount() {
+        if selectedSetsCount > minSetsCount {
+            selectedSetsCount -= 1
+        }
+    }
+
+    private func incrementCount() {
+        if selectedSetsCount < maxSetsCount {
+            selectedSetsCount += 1
+        }
+    }
+
+    private func saveSettings() {
+        UserDefaultsManager.shared.saveTestSetsCount(Int(selectedSetsCount))
+        navigateToHome()
+    }
+
+    private func navigateToHome() {
+        appStateManager.activeScreen = .home
     }
 }
 
+// MARK: - ヘルパービュー
+
+struct CounterButton: View {
+    let action: () -> Void
+    let systemName: String
+    let color: Color
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .foregroundColor(color)
+                .font(.title)
+        }
+        .padding(20)
+    }
+}
+
+
+// MARK: - プレビュー
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()

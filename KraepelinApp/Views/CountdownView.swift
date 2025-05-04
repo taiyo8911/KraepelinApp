@@ -26,25 +26,23 @@ struct CountdownView: View {
                 Text(showStart ? "" : "検査が始まります")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(.blue)
                     .dynamicTypeSize(...DynamicTypeSize.accessibility3)
 
                 // カウントダウンとスタートテキストの表示
                 if showStart {
                     Text("\(startText)")
                         .font(.system(size: 70, weight: .bold))
-                        .foregroundColor(.blue)
                         .scaleEffect(isAnimating ? 1.5 : 1.0)
                         .animation(.easeInOut(duration: 0.5), value: isAnimating)
                 } else {
                     Text("\(countdown)")
                         .font(.system(size: 100, weight: .bold))
-                        .foregroundColor(.blue)
                         .scaleEffect(isAnimating ? 1.5 : 1.0)
                         .animation(.easeInOut(duration: 0.5), value: isAnimating)
                 }
             }
             .padding()
+            .foregroundColor(.green)
             .onAppear {
                 // 数字が拡大・縮小するアニメーション
                 withAnimation(Animation.easeInOut(duration: 0.5).repeatForever()) {

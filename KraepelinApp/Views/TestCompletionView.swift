@@ -48,7 +48,7 @@ struct TestCompletionView: View {
                     .foregroundColor(.white)
                     .padding()
                     .frame(width: 200)
-                    .background(Color.blue)
+                    .background(Color.green)
                     .cornerRadius(10)
             }
         }

@@ -16,7 +16,7 @@ struct SetTransitionView: View {
             VStack {
                 Text("次")
                     .font(.system(size: 60, weight: .bold))
-                    .foregroundColor(.blue)
+                    .foregroundColor(.green)
             }
         }
     }
