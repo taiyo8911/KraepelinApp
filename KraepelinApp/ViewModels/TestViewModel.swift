@@ -26,7 +26,7 @@ class TestViewModel: ObservableObject {
 
     // 検査の総セット数
     var totalSets: Int {
-        return UserDefaultsManager.shared.testSetsCount
+        return UserDefaultsManager.shared.getTestSetsCount()
     }
 //    let totalSets: Int = 3 // セット数の設定
 

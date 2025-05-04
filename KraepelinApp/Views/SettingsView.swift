@@ -20,6 +20,13 @@ struct SettingsView: View {
         _selectedSetsCount = State(initialValue: Double(savedCount))
     }
 
+    // 設定できるセット数の最小値
+    private let minSetsCount: Double = 1
+
+    // 設定できるセット数の最大値
+    private let maxSetsCount: Double = 15
+
+
     var body: some View {
         VStack(spacing: 30) {
             // ヘッダー
@@ -35,73 +42,82 @@ struct SettingsView: View {
                 .padding()
 
                 Spacer()
-
-                Text("設定")
-                    .font(.headline)
-                    .padding()
-
-                Spacer()
             }
 
-            Spacer()
 
             // セット数設定
-            VStack(alignment: .leading, spacing: 15) {
-                Text("検査セット数")
+            VStack() {
+                Text("セット数の設定")
                     .font(.title2)
                     .fontWeight(.bold)
 
-                Text("検査を行うセット数を設定します（3〜15セット）")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-
                 HStack {
-                    Text("3")
+                    // マイナスボタン
+                    Button(action: {
+                        // セット数を減らす
+                        if selectedSetsCount > minSetsCount {
+                            selectedSetsCount -= 1
+                        }
+                    }) {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundColor(.red)
+                            .font(.title)
+                    }
+                    .padding(20)
 
-                    Slider(value: $selectedSetsCount, in: 3...15, step: 1)
+                    Text("\(Int(selectedSetsCount))")
+                        .font(.title)
 
-                    Text("15")
+                    // プラスボタン
+                    Button(action: {
+                        // セット数を増やす
+                        if selectedSetsCount < maxSetsCount {
+                            selectedSetsCount += 1
+                        }
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.green)
+                            .font(.title)
+                    }
+                    .padding(20)
                 }
-
-                Text("現在のセット数: \(Int(selectedSetsCount))")
-                    .font(.headline)
-                    .padding(.top, 10)
 
                 Button(action: {
                     // セット数を保存
                     UserDefaultsManager.shared.saveTestSetsCount(Int(selectedSetsCount))
 
+                    // 画面遷移
                     appStateManager.activeScreen = .home
                 }) {
                     Text("設定を保存")
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
+                        .padding(.vertical, 12)
                         .background(Color.blue)
                         .cornerRadius(8)
                 }
                 .padding(.top, 10)
             }
+            .frame(width: UIScreen.main.bounds.width * 0.8)
             .padding()
             .background(Color.blue.opacity(0.1))
             .cornerRadius(10)
-            .padding(.horizontal)
 
-            Spacer()
+//            Spacer()
 
             // 説明
             VStack(alignment: .leading, spacing: 10) {
                 Text("セット数について")
                     .font(.headline)
 
-                Text("本来のクレペリン検査は15セット×2回で行われますが、練習用に少ないセット数に設定することができます。")
+                Text("本来のクレペリン検査は、1分×15セット×2回で行われますが、このアプリでは練習用に少ないセット数に設定することができます。")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
+            .frame(width: UIScreen.main.bounds.width * 0.8)
             .padding()
             .background(Color.gray.opacity(0.1))
             .cornerRadius(10)
-            .padding(.horizontal)
 
             Spacer()
         }

@@ -12,6 +12,7 @@ struct CountdownView: View {
     @State private var countdown = 3 // カウントダウンの初期値
     @State private var isAnimating = false // アニメーションの状態
     @State private var showStart = false // 「はじめ」の表示状態
+    @State private var startText = "はじめ" // 表示するテキスト
 
     // タイマー
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -28,9 +29,9 @@ struct CountdownView: View {
                     .foregroundColor(.blue)
                     .dynamicTypeSize(...DynamicTypeSize.accessibility3)
 
-                // カウントダウン数字と「はじめ」の表示
+                // カウントダウンとスタートテキストの表示
                 if showStart {
-                    Text("はじめ")
+                    Text("\(startText)")
                         .font(.system(size: 70, weight: .bold))
                         .foregroundColor(.blue)
                         .scaleEffect(isAnimating ? 1.5 : 1.0)
@@ -51,6 +52,7 @@ struct CountdownView: View {
                 }
             }
         }
+        // タイマーの開始
         .onReceive(timer) { _ in
             if countdown > 1 {
                 countdown -= 1
@@ -61,7 +63,7 @@ struct CountdownView: View {
                 // タイマーをキャンセル
                 timer.upstream.connect().cancel()
 
-                // 「はじめ」表示後、テスト画面へ遷移
+                // スタートテキストの表示後、テスト画面へ遷移
                 appStateManager.activeScreen = .test
             }
         }

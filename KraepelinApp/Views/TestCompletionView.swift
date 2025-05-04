@@ -62,7 +62,6 @@ struct TestCompletionView: View {
     }
 }
 
-// プレビュー用
 struct TestCompletionView_Previews: PreviewProvider {
     static var previews: some View {
         TestCompletionView()
