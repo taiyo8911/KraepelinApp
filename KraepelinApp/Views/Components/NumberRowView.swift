@@ -12,7 +12,6 @@ struct NumberRowView: View {
     let numbers: [Int]
     let currentIndex: Int
 
-
     // 表示する数字の範囲を制限
     private var visibleNumbersRange: Range<Int> {
         // 現在の位置から左右に表示する数字の数

@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct KraepelinAppApp: App {
-    // アプリの状態管理
+    // アプリケーション全体の状態管理
     @StateObject private var userDefaultsManager = UserDefaultsManager.shared
     @StateObject private var appStateManager = AppStateManager.shared
 
@@ -18,7 +18,7 @@ struct KraepelinAppApp: App {
             ContentView()
                 .environmentObject(appStateManager)
                 .onAppear {
-                    // UserDefaultsの初期化
+                    // アプリ起動時のUserDefaultsの初期設定
                     UserDefaultsManager.shared.initializeUserDefaults()
                 }
         }
