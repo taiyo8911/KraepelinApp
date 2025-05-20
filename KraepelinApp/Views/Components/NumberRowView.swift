@@ -11,6 +11,14 @@ struct NumberRowView: View {
     // MARK: - プロパティ
     let numbers: [Int]
     let currentIndex: Int
+    let answerHistory: [Int?]
+
+    // イニシャライザ
+    init(numbers: [Int], currentIndex: Int, answerHistory: [Int?] = []) {
+        self.numbers = numbers
+        self.currentIndex = currentIndex
+        self.answerHistory = answerHistory
+    }
 
     // 表示する数字の範囲を制限
     private var visibleNumbersRange: Range<Int> {
@@ -32,6 +40,9 @@ struct NumberRowView: View {
         VStack(spacing: 2) {
             // 数字を表示する行
             numbersRow
+
+            // 解答を表示する行
+            answersRow
 
             // マーカーを表示する行
             markerRow
@@ -55,6 +66,45 @@ struct NumberRowView: View {
         }
         .padding(.horizontal)
     }
+
+
+    // 解答を表示する行を追加
+    private var answersRow: some View {
+        HStack(spacing: numberSpacing) {
+            ForEach(Array(visibleNumbersRange.dropLast()), id: \.self) { index in
+                // 各数字の間に解答を表示するスペース
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: numberWidth, height: 20)
+                    .overlay(
+                        Group {
+                            if index < answerHistory.count, let answer = answerHistory[index] {
+                                HStack(spacing: 0) {
+                                    Spacer()
+                                    Text("\(answer)")
+                                        .font(.system(.body, design: .monospaced))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.black)
+                                    Spacer()
+                                }
+                                .frame(width: numberWidth + numberSpacing)
+                                .offset(x: (numberWidth + numberSpacing) / 2)
+                            }
+                        }
+                    )
+            }
+
+            // 最後の数字のためのスペース
+            if visibleNumbersRange.upperBound > visibleNumbersRange.lowerBound {
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: numberWidth, height: 20)
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    
 
     // マーカーを表示する行
     private var markerRow: some View {

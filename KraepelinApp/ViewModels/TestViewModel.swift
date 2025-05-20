@@ -28,8 +28,10 @@ class TestViewModel: ObservableObject {
     /// 検査が完了したかどうかのフラグ
     @Published var isTestComplete: Bool = false
 
-    // MARK: - 設定値とパラメータ
+    /// ユーザーの回答履歴を保存する配列
+    @Published var answerHistory: [Int?] = []
 
+    // MARK: - 設定値とパラメータ
     /// 検査の総セット数（UserDefaultsから取得）
     var totalSets: Int {
         return userDefaultsManager.getTestSetsCount()
@@ -143,6 +145,12 @@ class TestViewModel: ObservableObject {
         // 入力を記録
         lastInput = number
 
+        // 解答履歴に保存
+        while answerHistory.count <= currentIndex {
+            answerHistory.append(nil)
+        }
+        answerHistory[currentIndex] = number
+
         // 正誤判定
         processAnswer(number)
 
@@ -186,6 +194,7 @@ class TestViewModel: ObservableObject {
         totalAnswers = 0
         currentIndex = 0
         lastInput = nil
+        answerHistory = []
         setResults = []
         setCorrectCounts = []
         setTotalCounts = []
@@ -198,6 +207,7 @@ class TestViewModel: ObservableObject {
         totalAnswers = 0
         currentIndex = 0
         lastInput = nil
+        answerHistory = []
     }
 
     /// 入力を受け付けられる状態かどうかを判定

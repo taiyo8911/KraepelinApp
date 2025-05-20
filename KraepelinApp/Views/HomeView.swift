@@ -49,7 +49,7 @@ struct HomeView: View {
                     HStack {
                         Image(systemName: "info.circle")
 
-                        Text("チュートリアル")
+                        Text("説明を見る")
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
@@ -93,16 +93,6 @@ struct HomeView: View {
 
             Spacer()
 
-            Button(action: {
-                // プライバシーポリシーへのリンク
-                 UIApplication.shared.open(URL(string: "https://taiyo8911.github.io/KraepelinApp/")!)
-            }) {
-                Text("プライバシーポリシー")
-                    .font(.caption)
-                    .foregroundColor(.green)
-                    .underline()
-            }
-            .padding(.bottom)
         }
         .padding()
         .foregroundColor(.green)

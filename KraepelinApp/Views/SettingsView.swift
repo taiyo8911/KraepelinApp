@@ -14,7 +14,7 @@ struct SettingsView: View {
 
     // 定数
     private let minSetsCount: Double = 1 // 設定できるセット数の最小値
-    private let maxSetsCount: Double = 15 // 設定できるセット数の最大値
+    private let maxSetsCount: Double = 30 // 設定できるセット数の最大値
     private let containerWidth: CGFloat = UIScreen.main.bounds.width * 0.8
 
     // MARK: - 初期化
@@ -114,7 +114,7 @@ struct SettingsView: View {
             Text("セット数について")
                 .font(.headline)
 
-            Text("本来のクレペリン検査は、1分×15セット×2回で行われますが、このアプリでは練習用に少ないセット数に設定することができます。")
+            Text("本来のクレペリン検査は、5分の休憩をはさんだ、前半15分・後半15分で行われますが、このアプリではセット数を自由に設定できます。")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }

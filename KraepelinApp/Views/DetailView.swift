@@ -96,10 +96,27 @@ struct DetailView: View {
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             // セクションヘッダー
-            Text("セット別正解数")
+            Text("セット別結果")
                 .font(.headline)
                 .padding(.top, 8)
                 .dynamicTypeSize(...maxDynamicTypeSize)
+
+            // グラフタイトル
+            HStack {
+                Text("セット")
+                    .font(.subheadline)
+                    .frame(width: 50, alignment: .leading)
+
+                Text("正答数")
+                    .font(.subheadline)
+                    .frame(width: 50, alignment: .leading)
+
+                Spacer()
+
+                Text("正答率")
+                    .font(.subheadline)
+                    .frame(width: 50, alignment: .leading)
+            }
 
             // グラフ表示
             chartContent
@@ -112,6 +129,7 @@ struct DetailView: View {
             // グラフの高さを適切に設定
             let graphHeight = CGFloat(testResult.setAccuracies.count) * 32 + 40
 
+            // 棒グラフ
             HorizontalBarChartView(
                 setAccuracies: testResult.setAccuracies,
                 correctCounts: testResult.correctCounts,

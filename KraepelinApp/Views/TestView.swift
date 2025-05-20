@@ -22,8 +22,12 @@ struct TestView: View {
                 Spacer()
 
                 // 数字列の表示
-                NumberRowView(numbers: viewModel.currentNumbers, currentIndex: viewModel.currentIndex)
-                    .padding()
+                NumberRowView(
+                    numbers: viewModel.currentNumbers,
+                    currentIndex: viewModel.currentIndex,
+                    answerHistory: viewModel.answerHistory
+                )
+                .padding()
 
                 Text("数字を入力してください")
                     .font(.subheadline)
