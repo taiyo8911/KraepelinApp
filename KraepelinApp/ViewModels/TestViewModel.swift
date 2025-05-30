@@ -13,11 +13,14 @@ import Combine
 class TestViewModel: ObservableObject {
     // MARK: - 公開プロパティ
 
-    /// 現在表示中の数字列
-    @Published var currentNumbers: [Int] = []
+    /// 現在表示中の数字列（5行分）
+    @Published var currentNumbers: [[Int]] = []
 
-    /// 現在のインデックス（赤丸マーカーの位置）
-    @Published var currentIndex: Int = 0
+    /// 現在の行インデックス（絶対位置）
+    @Published var currentRowIndex: Int = 0
+
+    /// 現在の列インデックス（各行内での位置）
+    @Published var currentColumnIndex: Int = 0
 
     /// 最後にユーザーが入力した数字
     @Published var lastInput: Int? = nil
@@ -28,8 +31,11 @@ class TestViewModel: ObservableObject {
     /// 検査が完了したかどうかのフラグ
     @Published var isTestComplete: Bool = false
 
-    /// ユーザーの回答履歴を保存する配列
-    @Published var answerHistory: [Int?] = []
+    /// ユーザーの回答履歴を保存する2次元配列
+    @Published var answerHistory: [[Int?]] = []
+
+    /// 表示開始行のオフセット（スクロール用）
+    @Published var displayOffset: Int = 0
 
     // MARK: - 設定値とパラメータ
     /// 検査の総セット数（UserDefaultsから取得）
@@ -40,8 +46,11 @@ class TestViewModel: ObservableObject {
     /// 各セットの制限時間（秒）
     private let setDuration: TimeInterval
 
-    /// 数字列の長さ
-    private let numberSequenceLength: Int
+    /// 表示する行数
+    private let displayRowCount: Int = 5
+
+    /// 各行の数字列の長さ（元の設定に戻す）
+    private let rowLength: Int
 
     /// 生成する数字の範囲
     private let numberRange: ClosedRange<Int>
@@ -77,25 +86,46 @@ class TestViewModel: ObservableObject {
     /// 各セットの問題数
     private var setTotalCounts: [Int] = []
 
+    // MARK: - 計算プロパティ
+
+    /// 現在表示中の5行のデータを取得
+    var displayRows: [[Int]] {
+        let startRow = displayOffset
+        let endRow = min(displayOffset + displayRowCount, currentNumbers.count)
+        return Array(currentNumbers[startRow..<endRow])
+    }
+
+    /// 現在表示中の5行の解答履歴を取得
+    var displayAnswerHistory: [[Int?]] {
+        let startRow = displayOffset
+        let endRow = min(displayOffset + displayRowCount, answerHistory.count)
+        return Array(answerHistory[startRow..<endRow])
+    }
+
+    /// 表示座標系での現在位置
+    var displayCurrentRowIndex: Int {
+        return currentRowIndex - displayOffset
+    }
+
     // MARK: - 初期化と終了処理
 
     /// 初期化
     /// - Parameters:
     ///   - userDefaultsManager: UserDefaultsマネージャー（テスト時に差し替え可能）
     ///   - setDuration: 1セットあたりの制限時間（秒）
-    ///   - numberSequenceLength: 生成する数字列の長さ
+    ///   - rowLength: 各行の数字列の長さ（元の設定116に戻す）
     ///   - numberRange: 生成する数字の範囲
     init(userDefaultsManager: UserDefaultsManagerProtocol = UserDefaultsManager.shared,
-         setDuration: TimeInterval = 60,
-         numberSequenceLength: Int = 116,
+         setDuration: TimeInterval = 5,
+         rowLength: Int = 116,
          numberRange: ClosedRange<Int> = 3...9) {
 
         self.userDefaultsManager = userDefaultsManager
         self.setDuration = setDuration
-        self.numberSequenceLength = numberSequenceLength
+        self.rowLength = rowLength
         self.numberRange = numberRange
 
-        generateNumbers()
+        generateInitialNumbers()
     }
 
     /// デイニシャライザ - タイマーを確実に破棄
@@ -126,11 +156,12 @@ class TestViewModel: ObservableObject {
             return
         }
 
-        // 新セット用にデータをリセット
-        resetCurrentSetData()
+        // セット間では数字列はリセットしない！
+        // ただし、マーカーは次の行の最初に移動
+        moveToNextRowStart()
 
-        // 新しい数字列を生成
-        generateNumbers()
+        // セットのカウンターのみリセット
+        resetCurrentSetCounters()
 
         // タイマー再開
         startTimer()
@@ -146,10 +177,8 @@ class TestViewModel: ObservableObject {
         lastInput = number
 
         // 解答履歴に保存
-        while answerHistory.count <= currentIndex {
-            answerHistory.append(nil)
-        }
-        answerHistory[currentIndex] = number
+        ensureAnswerHistoryCapacity()
+        answerHistory[currentRowIndex][currentColumnIndex] = number
 
         // 正誤判定
         processAnswer(number)
@@ -187,33 +216,32 @@ class TestViewModel: ObservableObject {
 
     // MARK: - 内部ヘルパーメソッド
 
-    /// 検査データを完全にリセットする
+    /// 検査データを完全にリセットする（テスト開始時のみ）
     private func resetTestData() {
         currentSetIndex = 0
-        correctAnswers = 0
-        totalAnswers = 0
-        currentIndex = 0
+        currentRowIndex = 0
+        currentColumnIndex = 0
+        displayOffset = 0
         lastInput = nil
-        answerHistory = []
         setResults = []
         setCorrectCounts = []
         setTotalCounts = []
-        generateNumbers()
+        resetCurrentSetCounters()
+        generateInitialNumbers()
     }
 
-    /// 現在のセットのデータをリセットする
-    private func resetCurrentSetData() {
+    /// 現在のセットのカウンターのみリセット（数字列はそのまま）
+    private func resetCurrentSetCounters() {
         correctAnswers = 0
         totalAnswers = 0
-        currentIndex = 0
-        lastInput = nil
-        answerHistory = []
     }
 
     /// 入力を受け付けられる状態かどうかを判定
     /// - Returns: 入力可能な場合はtrue
     private func canAcceptInput() -> Bool {
-        return currentIndex < currentNumbers.count - 1 && timer != nil
+        return timer != nil &&
+               currentRowIndex < currentNumbers.count &&
+               currentColumnIndex < rowLength - 1
     }
 
     /// ユーザーの回答を処理する
@@ -234,25 +262,82 @@ class TestViewModel: ObservableObject {
     /// 正解を計算する
     /// - Returns: 正解の数字
     private func calculateCorrectAnswer() -> Int {
-        return (currentNumbers[currentIndex] + currentNumbers[currentIndex + 1]) % 10
+        let currentNum = currentNumbers[currentRowIndex][currentColumnIndex]
+        let nextNum = currentNumbers[currentRowIndex][currentColumnIndex + 1]
+        return (currentNum + nextNum) % 10
+    }
+
+    /// 次の行の最初に移動する
+    private func moveToNextRowStart() {
+        currentColumnIndex = 0
+        currentRowIndex += 1
+
+        // 新しい行が必要かチェック
+        ensureRowExists(currentRowIndex)
+
+        // スクロールが必要かチェック
+        checkScrollNeeded()
     }
 
     /// 次の問題へ移動する
     private func moveToNextProblem() {
-        // 次の問題へ
-        currentIndex += 1
+        currentColumnIndex += 1
 
-        // 最後まで到達したら新しい数字を生成
-        if currentIndex >= currentNumbers.count - 1 {
-            generateNumbers()
-            currentIndex = 0
+        // 行の最後まで到達したら次の行へ
+        if currentColumnIndex >= rowLength - 1 {
+            currentColumnIndex = 0
+            currentRowIndex += 1
+
+            // 新しい行が必要かチェック
+            ensureRowExists(currentRowIndex)
+
+            // スクロールが必要かチェック
+            checkScrollNeeded()
         }
     }
 
-    /// ランダムな数字列を生成する
-    private func generateNumbers() {
-        currentNumbers = (0..<numberSequenceLength).map { _ in
-            Int.random(in: numberRange)
+    /// 指定した行が存在することを保証する
+    private func ensureRowExists(_ rowIndex: Int) {
+        while currentNumbers.count <= rowIndex {
+            addNewRow()
+        }
+    }
+
+    /// 新しい行を追加する
+    private func addNewRow() {
+        let newRow = (0..<rowLength).map { _ in Int.random(in: numberRange) }
+        currentNumbers.append(newRow)
+
+        // 解答履歴も拡張
+        answerHistory.append(Array(repeating: nil, count: rowLength))
+    }
+
+    /// スクロールが必要かチェックして実行
+    private func checkScrollNeeded() {
+        // 現在の行が表示範囲を超えた場合はスクロール
+        if currentRowIndex >= displayOffset + displayRowCount {
+            displayOffset = currentRowIndex - displayRowCount + 1
+        }
+    }
+
+    /// 解答履歴の容量を確保する
+    private func ensureAnswerHistoryCapacity() {
+        // 行数が足りない場合は追加
+        while answerHistory.count <= currentRowIndex {
+            answerHistory.append(Array(repeating: nil, count: rowLength))
+        }
+    }
+
+    /// 初期の数字列を生成する
+    private func generateInitialNumbers() {
+        currentNumbers = []
+        answerHistory = []
+
+        // 初期表示用に5行分を生成
+        for _ in 0..<displayRowCount {
+            let row = (0..<rowLength).map { _ in Int.random(in: numberRange) }
+            currentNumbers.append(row)
+            answerHistory.append(Array(repeating: nil, count: rowLength))
         }
     }
 

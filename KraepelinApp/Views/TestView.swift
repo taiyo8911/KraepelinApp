@@ -21,27 +21,18 @@ struct TestView: View {
             VStack {
                 Spacer()
 
-                // 数字列の表示
+                // 5行の数字列の表示
                 NumberRowView(
-                    numbers: viewModel.currentNumbers,
-                    currentIndex: viewModel.currentIndex,
-                    answerHistory: viewModel.answerHistory
+                    numbersGrid: viewModel.displayRows,
+                    answerHistoryGrid: viewModel.displayAnswerHistory,
+                    currentRowIndex: viewModel.displayCurrentRowIndex,
+                    currentColumnIndex: viewModel.currentColumnIndex
                 )
-                .padding()
-
-                Text("数字を入力してください")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .padding()
-                    .dynamicTypeSize(...DynamicTypeSize.accessibility2)
-
-                Spacer()
 
                 // 数字キーパッド
                 NumberPadView(onNumberTapped: { number in
                     viewModel.inputAnswer(number)
                 })
-                .padding(.bottom)
 
                 Spacer()
             }
@@ -60,7 +51,7 @@ struct TestView: View {
                         .edgesIgnoringSafeArea(.all)
 
                     VStack {
-                        Text("終了")
+                        Text("やめ")
                             .font(.system(size: 60, weight: .bold))
                             .foregroundColor(.green)
                     }
@@ -126,7 +117,7 @@ struct TestView: View {
 
             // UI更新は必ずメインスレッドで
             DispatchQueue.main.async {
-                // 現在のセットが最後のセットかどうかを確認（currentSetIndex == 2 for 3 sets）
+                // 現在のセットが最後のセットかどうかを確認
                 let isLastSet = self.viewModel.currentSetIndex == self.viewModel.totalSets - 1
 
                 // 適切な遷移画面を表示

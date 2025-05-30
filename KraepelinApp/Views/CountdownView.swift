@@ -12,7 +12,7 @@ struct CountdownView: View {
     @State private var countdown = 3 // カウントダウンの初期値
     @State private var isAnimating = false // アニメーションの状態
     @State private var showStart = false // 「はじめ」の表示状態
-    @State private var startText = "はじめ" // 表示するテキスト
+    @State private var startText = "始め" // 表示するテキスト
 
     // タイマー
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
