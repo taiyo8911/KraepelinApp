@@ -55,5 +55,3 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(AppStateManager.shared)
     }
 }
-
-// test
