@@ -29,8 +29,8 @@ struct TestView: View {
                     currentColumnIndex: viewModel.currentColumnIndex
                 )
 
-                // 数字キーパッド
-                NumberPadView(onNumberTapped: { number in
+                // 手書き入力キャンバス
+                HandwritingCanvasView(onNumberRecognized: { number in
                     viewModel.inputAnswer(number)
                 })
 
