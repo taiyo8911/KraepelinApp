@@ -116,7 +116,7 @@ class TestViewModel: ObservableObject {
     ///   - rowLength: 各行の数字列の長さ（元の設定116に戻す）
     ///   - numberRange: 生成する数字の範囲
     init(userDefaultsManager: UserDefaultsManagerProtocol = UserDefaultsManager.shared,
-         setDuration: TimeInterval = 5,
+         setDuration: TimeInterval = 60,
          rowLength: Int = 116,
          numberRange: ClosedRange<Int> = 3...9) {
 
