@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct CountdownView: View {
-    @EnvironmentObject var appStateManager: AppStateManager // アプリの状態管理
-    @State private var countdown = 3 // カウントダウンの初期値
-    @State private var isAnimating = false // アニメーションの状態
-    @State private var showStart = false // 「はじめ」の表示状態
-    @State private var startText = "始め" // 表示するテキスト
+    @EnvironmentObject var appStateManager: AppStateManager
+    @State private var countdown = 3
+    @State private var isAnimating = false
+    @State private var showStart = false
 
-    // タイマー
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    private let startText = "始め"
 
     var body: some View {
         ZStack {
@@ -30,7 +28,7 @@ struct CountdownView: View {
 
                 // カウントダウンとスタートテキストの表示
                 if showStart {
-                    Text("\(startText)")
+                    Text(startText)
                         .font(.system(size: 70, weight: .bold))
                         .scaleEffect(isAnimating ? 1.5 : 1.0)
                         .animation(.easeInOut(duration: 0.5), value: isAnimating)
@@ -50,21 +48,21 @@ struct CountdownView: View {
                 }
             }
         }
-        // タイマーの開始
-        .onReceive(timer) { _ in
-            if countdown > 1 {
-                countdown -= 1
-            } else if countdown == 1 {
-                countdown -= 1
-                showStart = true
-            } else if showStart {
-                // タイマーをキャンセル
-                timer.upstream.connect().cancel()
-
-                // スタートテキストの表示後、テスト画面へ遷移
-                appStateManager.activeScreen = .test
-            }
+        .task {
+            await runCountdown()
         }
+    }
+
+    /// 3 → 2 → 1 → 「始め」と進み、最後にテスト画面へ遷移する
+    private func runCountdown() async {
+        for next in [2, 1] {
+            try? await Task.sleep(for: .seconds(1))
+            countdown = next
+        }
+        try? await Task.sleep(for: .seconds(1))
+        showStart = true
+        try? await Task.sleep(for: .seconds(1))
+        appStateManager.activeScreen = .test
     }
 }
 

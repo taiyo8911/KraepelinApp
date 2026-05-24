@@ -111,11 +111,9 @@ struct TestView: View {
         viewModel.startTest()
 
         viewModel.onSetComplete = {
-            print("Set completed. Current set index: \(self.viewModel.currentSetIndex)")
+            Task { @MainActor in
+                print("Set completed. Current set index: \(self.viewModel.currentSetIndex)")
 
-            // UI更新は必ずメインスレッドで
-            DispatchQueue.main.async {
-                // 現在のセットが最後のセットかどうかを確認
                 let isLastSet = self.viewModel.currentSetIndex == self.viewModel.totalSets - 1
 
                 // 適切な遷移画面を表示
@@ -127,32 +125,30 @@ struct TestView: View {
                     }
                 }
 
-                // 遅延処理
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    // 遷移画面を閉じる
-                    withAnimation {
-                        self.showSetTransition = false
-                        self.showFinalTransition = false
-                    }
+                // 1秒待ってから次の処理へ
+                try? await Task.sleep(for: .seconds(1))
 
-                    if isLastSet {
-                        print("Last set completed. Moving to completion screen.")
+                // 遷移画面を閉じる
+                withAnimation {
+                    self.showSetTransition = false
+                    self.showFinalTransition = false
+                }
 
-                        // 重要: 最後のセットの結果を保存
-                        self.viewModel.saveCurrentSetResult()
+                if isLastSet {
+                    print("Last set completed. Moving to completion screen.")
 
-                        // 結果を作成し、isTestCompleteをtrueに設定
-                        self.viewModel.isTestComplete = true
+                    // 重要: 最後のセットの結果を保存
+                    self.viewModel.saveCurrentSetResult()
+                    self.viewModel.isTestComplete = true
 
-                        // 結果オブジェクトは一度だけ生成する（body評価ごとに生成しない）
-                        self.testResult = self.viewModel.generateTestResult()
+                    // 結果オブジェクトは一度だけ生成する（body評価ごとに生成しない）
+                    self.testResult = self.viewModel.generateTestResult()
 
-                        // 完了画面を表示
-                        self.showCompletion = true
-                    } else {
-                        // 次のセットへ
-                        self.viewModel.moveToNextSet()
-                    }
+                    // 完了画面を表示
+                    self.showCompletion = true
+                } else {
+                    // 次のセットへ
+                    self.viewModel.moveToNextSet()
                 }
             }
         }
