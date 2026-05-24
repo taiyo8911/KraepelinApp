@@ -33,7 +33,7 @@ class UserDefaultsManager: ObservableObject {
     private enum DefaultValues {
         static let testSetsCount = 15
         static let minSetsCount = 1
-        static let maxSetsCount = 15
+        static let maxSetsCount = 30
     }
 
     // MARK: - 初期化

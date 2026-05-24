@@ -14,6 +14,7 @@ struct TestView: View {
     @State private var showSetTransition = false
     @State private var showFinalTransition = false
     @State private var showCompletion = false
+    @State private var testResult: TestResult?
 
     var body: some View {
         ZStack {
@@ -61,7 +62,7 @@ struct TestView: View {
             }
 
             // 完了画面のオーバーレイ
-            if showCompletion {
+            if showCompletion, let result = testResult {
                 ZStack {
                     Color.white.ignoresSafeArea()
 
@@ -77,8 +78,6 @@ struct TestView: View {
                             .font(.headline)
                             .padding(.bottom, 10)
 
-                        // 正答率表示
-                        let result = viewModel.generateTestResult()
                         Text("全体の正答率: \(Int(result.overallAccuracy * 100))%")
                             .font(.title3)
                             .padding()
@@ -87,10 +86,9 @@ struct TestView: View {
                             // 検査結果を保存
                             UserDefaultsManager.shared.addTestResult(result)
 
-                            // 検査結果の詳細画面に遷移するために、新しい詳細画面をフルスクリーン表示
-                            appStateManager.activeScreen = .detail
-                            // 遷移先で結果を見るための最新の結果IDを保存
+                            // 詳細画面で参照するIDを先にセットしてから遷移
                             appStateManager.lastResultId = result.id
+                            appStateManager.activeScreen = .detail
                         }
                         .font(.headline)
                         .foregroundColor(.white)
@@ -145,6 +143,9 @@ struct TestView: View {
 
                         // 結果を作成し、isTestCompleteをtrueに設定
                         self.viewModel.isTestComplete = true
+
+                        // 結果オブジェクトは一度だけ生成する（body評価ごとに生成しない）
+                        self.testResult = self.viewModel.generateTestResult()
 
                         // 完了画面を表示
                         self.showCompletion = true

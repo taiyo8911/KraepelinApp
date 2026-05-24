@@ -14,6 +14,9 @@ struct ContentView: View {
 
     @ObservedObject private var userDefaultsManager = UserDefaultsManager.shared
 
+    // body再評価のたびに再生成されないよう@StateObjectで保持
+    @StateObject private var testViewModel = TestViewModel()
+
     var body: some View {
         NavigationView {
             // 現在のアクティブ画面に基づいて表示する画面を切り替え
@@ -28,7 +31,7 @@ struct ContentView: View {
                 CountdownView()
             case .test:
                 TestView()
-                    .environmentObject(TestViewModel())
+                    .environmentObject(testViewModel)
             case .history:
                 HistoryView()
             case .settings:
