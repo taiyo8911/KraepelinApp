@@ -56,7 +56,7 @@ struct HistoryView: View {
             )
         }
         .sheet(item: $selectedResult) { result in
-            DetailView(isModal: true, testResult: result)
+            DetailView(testResult: result)
         }
     }
 

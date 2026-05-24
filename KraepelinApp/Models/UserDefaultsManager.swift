@@ -25,7 +25,6 @@ class UserDefaultsManager: ObservableObject {
         static let testResults = "testResults"
         static let testSetsCount = "testSetsCount"
         static let isFirstLaunchCompleted = "isFirstLaunchCompleted"
-        static let shouldShowTutorial = "shouldShowTutorial"
     }
 
     /// デフォルト値
@@ -56,7 +55,7 @@ class UserDefaultsManager: ObservableObject {
     }
 
     /// テストのセット数を取得
-    /// - Returns: 有効範囲内のセット数（1〜15）
+    /// - Returns: 有効範囲内のセット数（1〜30）
     func getTestSetsCount() -> Int {
         let count = UserDefaults.standard.integer(forKey: Keys.testSetsCount)
 
@@ -105,7 +104,6 @@ class UserDefaultsManager: ObservableObject {
     /// 初回起動時のデフォルト値を設定
     private func setInitialDefaults() {
         UserDefaults.standard.set(true, forKey: Keys.isFirstLaunchCompleted)
-        UserDefaults.standard.set(true, forKey: Keys.shouldShowTutorial)
         UserDefaults.standard.set(DefaultValues.testSetsCount, forKey: Keys.testSetsCount)
     }
 

@@ -10,11 +10,6 @@ import SwiftUI
 
 struct DetailView: View {
     // MARK: - プロパティ
-    // 以下のプロパティを追加
-    @Environment(\.presentationMode) var presentationMode
-    // ダイアログとして表示されている場合の識別フラグ
-    var isModal: Bool = false
-
     @EnvironmentObject var appStateManager: AppStateManager
 
     let testResult: TestResult
@@ -27,18 +22,6 @@ struct DetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // 戻るボタンを条件付きで表示
-                if isModal {
-                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("戻る")
-                        }
-                    }
-                    .padding(.bottom, 8)
-                    .dynamicTypeSize(...maxDynamicTypeSize)
-                }
-
                 testSummarySection
                 chartSection
             }
