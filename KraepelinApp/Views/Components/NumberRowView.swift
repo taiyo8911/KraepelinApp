@@ -43,20 +43,17 @@ struct NumberRowView: View {
     /// 指定した行のビューを作成
     /// - Parameter displayRowIndex: 表示座標系での行インデックス（0-4）
     /// - Returns: その行のビュー
+    @ViewBuilder
     private func createRowView(for displayRowIndex: Int) -> some View {
-        guard displayRowIndex < numbersGrid.count else {
-            return AnyView(
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: rowHeight)
-            )
-        }
+        if displayRowIndex >= numbersGrid.count {
+            Rectangle()
+                .fill(Color.clear)
+                .frame(height: rowHeight)
+        } else {
+            let numbers = numbersGrid[displayRowIndex]
+            let answers = displayRowIndex < answerHistoryGrid.count ? answerHistoryGrid[displayRowIndex] : []
+            let isCurrentRow = displayRowIndex == currentRowIndex
 
-        let numbers = numbersGrid[displayRowIndex]
-        let answers = displayRowIndex < answerHistoryGrid.count ? answerHistoryGrid[displayRowIndex] : []
-        let isCurrentRow = displayRowIndex == currentRowIndex
-
-        return AnyView(
             VStack(spacing: 0) {  // spacingを0にして密着
                 // 数字行（上段）
                 createNumbersRow(numbers: numbers, isCurrentRow: isCurrentRow, displayRowIndex: displayRowIndex)
@@ -68,7 +65,7 @@ struct NumberRowView: View {
                     .offset(y: -12)  // 上に12px移動して数字行に重なる位置まで
             }
             .frame(height: rowHeight)  // 行全体の高さを固定
-        )
+        }
     }
 
     /// 数字行を作成

@@ -75,7 +75,6 @@ class UserDefaultsManager: ObservableObject {
         let validCount = min(max(count, DefaultValues.minSetsCount), DefaultValues.maxSetsCount)
 
         UserDefaults.standard.set(validCount, forKey: Keys.testSetsCount)
-        UserDefaults.standard.synchronize()
 
         // 公開プロパティを更新
         testSetsCount = validCount
@@ -108,7 +107,6 @@ class UserDefaultsManager: ObservableObject {
         UserDefaults.standard.set(true, forKey: Keys.isFirstLaunchCompleted)
         UserDefaults.standard.set(true, forKey: Keys.shouldShowTutorial)
         UserDefaults.standard.set(DefaultValues.testSetsCount, forKey: Keys.testSetsCount)
-        UserDefaults.standard.synchronize()
     }
 
     /// テスト結果をUserDefaultsから読み込む
@@ -132,7 +130,6 @@ class UserDefaultsManager: ObservableObject {
             let encoder = JSONEncoder()
             let data = try encoder.encode(testResults)
             UserDefaults.standard.set(data, forKey: Keys.testResults)
-            UserDefaults.standard.synchronize()
         } catch {
             handleSaveError(error)
         }

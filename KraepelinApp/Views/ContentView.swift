@@ -18,7 +18,7 @@ struct ContentView: View {
     @StateObject private var testViewModel = TestViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             // 現在のアクティブ画面に基づいて表示する画面を切り替え
             switch appStateManager.activeScreen {
             case .home:

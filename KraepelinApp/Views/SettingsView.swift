@@ -15,7 +15,6 @@ struct SettingsView: View {
     // 定数
     private let minSetsCount: Double = 1 // 設定できるセット数の最小値
     private let maxSetsCount: Double = 30 // 設定できるセット数の最大値
-    private let containerWidth: CGFloat = UIScreen.main.bounds.width * 0.8
 
     // MARK: - 初期化
     init() {
@@ -25,13 +24,17 @@ struct SettingsView: View {
 
     // MARK: - ビュー
     var body: some View {
-        VStack(spacing: 30) {
-            navigationBar
-            settingsSection
-            descriptionSection
-            Spacer()
+        GeometryReader { geometry in
+            let containerWidth = geometry.size.width * 0.8
+            VStack(spacing: 30) {
+                navigationBar
+                settingsSection(width: containerWidth)
+                descriptionSection(width: containerWidth)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
         }
-        .padding()
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 
@@ -59,7 +62,7 @@ struct SettingsView: View {
     }
 
     // 設定セクション
-    private var settingsSection: some View {
+    private func settingsSection(width: CGFloat) -> some View {
         VStack {
             Text("セット数の設定")
                 .font(.title2)
@@ -69,7 +72,7 @@ struct SettingsView: View {
 
             saveButton
         }
-        .frame(width: containerWidth)
+        .frame(width: width)
         .padding()
         .background(Color.green.opacity(0.1))
         .cornerRadius(10)
@@ -109,7 +112,7 @@ struct SettingsView: View {
     }
 
     // 説明セクション
-    private var descriptionSection: some View {
+    private func descriptionSection(width: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("セット数について")
                 .font(.headline)
@@ -118,7 +121,7 @@ struct SettingsView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
-        .frame(width: containerWidth)
+        .frame(width: width)
         .padding()
         .background(Color.gray.opacity(0.1))
         .cornerRadius(10)
