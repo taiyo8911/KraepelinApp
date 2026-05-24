@@ -84,7 +84,7 @@ struct TestView: View {
 
                         Button("結果を見る") {
                             // 検査結果を保存
-                            UserDefaultsManager.shared.addTestResult(result)
+                            viewModel.saveResult(result)
 
                             // 詳細画面で参照するIDを先にセットしてから遷移
                             appStateManager.lastResultId = result.id

@@ -37,10 +37,8 @@ class TestViewModel: ObservableObject {
     @Published var displayOffset: Int = 0
 
     // MARK: - 設定値とパラメータ
-    /// 検査の総セット数（UserDefaultsから取得）
-    var totalSets: Int {
-        return userDefaultsManager.getTestSetsCount()
-    }
+    /// 検査の総セット数（テスト開始時にUserDefaultsから取得して固定）
+    private(set) var totalSets: Int
 
     /// 各セットの制限時間（秒）
     private let setDuration: TimeInterval
@@ -123,6 +121,7 @@ class TestViewModel: ObservableObject {
         self.setDuration = setDuration
         self.rowLength = rowLength
         self.numberRange = numberRange
+        self.totalSets = userDefaultsManager.getTestSetsCount()
 
         generateInitialNumbers()
     }
@@ -136,6 +135,9 @@ class TestViewModel: ObservableObject {
 
     /// 検査を開始する
     func startTest() {
+        // テスト開始時点の設定セット数をスナップショット
+        // （テスト中に設定が変更されても影響を受けないようにする）
+        totalSets = userDefaultsManager.getTestSetsCount()
         resetTestData()
         isTestComplete = false
         startTimer()
@@ -195,6 +197,12 @@ class TestViewModel: ObservableObject {
         setTotalCounts.append(total)
 
         logResults(setIndex: currentSetIndex, accuracy: accuracy, corrects: corrects, total: total)
+    }
+
+    /// 検査結果を永続化ストレージに保存する
+    /// - Parameter result: 保存する検査結果
+    func saveResult(_ result: TestResult) {
+        userDefaultsManager.addTestResult(result)
     }
 
     /// 検査結果を生成する
