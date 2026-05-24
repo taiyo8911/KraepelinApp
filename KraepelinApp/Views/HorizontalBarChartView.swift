@@ -57,14 +57,14 @@ struct HorizontalBarChartView: View {
             ZStack(alignment: .leading) {
                 // 背景バー
                 Rectangle()
-                    .fill(Color.gray.opacity(0.2))
+                    .fill(AppColor.surfaceMuted)
                     .frame(height: barHeight)
                     .cornerRadius(4)
 
                 // 正解数バー
                 if let maxCount = totalCounts.max(), maxCount > 0 {
                     Rectangle()
-                        .fill(Color.green.opacity(0.7))
+                        .fill(AppColor.primary.opacity(0.7))
                         .frame(width: CGFloat(correctCount) / CGFloat(maxCount) * barWidth, height: barHeight)
                         .cornerRadius(4)
                 }
@@ -74,7 +74,7 @@ struct HorizontalBarChartView: View {
                     Text("\(correctCount)")
                         .font(.subheadline)
                         .frame(width: CGFloat(correctCount) / CGFloat(maxCount) * barWidth - 6, alignment: .trailing)
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
             }
             .frame(width: barWidth)

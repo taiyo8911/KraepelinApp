@@ -11,7 +11,7 @@ struct HomeView: View {
     @EnvironmentObject var appStateManager: AppStateManager
 
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: Spacing.xxl) {
             Spacer()
 
             Image(systemName: "brain.head.profile")
@@ -26,68 +26,34 @@ struct HomeView: View {
 
             Spacer()
 
-            VStack(spacing: 20) {
-                Button(action: {
+            VStack(spacing: Spacing.l) {
+                Button {
                     appStateManager.activeScreen = .testStart
-                }) {
-                    HStack {
-                        Image(systemName: "play.fill")
-
-                        Text("検査を始める")
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Color.green)
-                    .cornerRadius(10)
+                } label: {
+                    Label("検査を始める", systemImage: "play.fill")
                 }
+                .buttonStyle(.primary)
 
-                Button(action: {
+                Button {
                     appStateManager.activeScreen = .tutorial
-                }) {
-                    HStack {
-                        Image(systemName: "info.circle")
-
-                        Text("説明を見る")
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .foregroundColor(.green)
-                    .background(Color.green.opacity(0.1))
-                    .cornerRadius(10)
+                } label: {
+                    Label("説明を見る", systemImage: "info.circle")
                 }
+                .buttonStyle(.secondary)
 
-                Button(action: {
+                Button {
                     appStateManager.activeScreen = .history
-                }) {
-                    HStack {
-                        Image(systemName: "clock.arrow.circlepath")
-                        Text("履歴を見る")
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .foregroundColor(.green)
-                    .background(Color.green.opacity(0.1))
-                    .cornerRadius(10)
+                } label: {
+                    Label("履歴を見る", systemImage: "clock.arrow.circlepath")
                 }
+                .buttonStyle(.secondary)
 
-                Button(action: {
+                Button {
                     appStateManager.activeScreen = .settings
-                }) {
-                    HStack {
-                        Image(systemName: "gear")
-                        Text("設定")
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .foregroundColor(.green)
-                    .background(Color.green.opacity(0.1))
-                    .cornerRadius(10)
+                } label: {
+                    Label("設定", systemImage: "gear")
                 }
+                .buttonStyle(.secondary)
             }
             .padding(.horizontal)
 
@@ -95,7 +61,7 @@ struct HomeView: View {
 
         }
         .padding()
-        .foregroundColor(.green)
+        .foregroundColor(AppColor.primary)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
     }
 }

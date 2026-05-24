@@ -36,11 +36,11 @@ struct HistoryView: View {
 
             ToolbarItem(placement: .bottomBar) {
                 if !userDefaultsManager.testResults.isEmpty {
-                    Button(action: {
+                    Button {
                         showingAlert = true
-                    }) {
+                    } label: {
                         Text("履歴を全て削除")
-                            .foregroundColor(.red)
+                            .foregroundColor(AppColor.danger)
                     }
                 }
             }
@@ -61,26 +61,21 @@ struct HistoryView: View {
     }
 
     private var emptyView: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: Spacing.l) {
             Image(systemName: "doc.text.magnifyingglass")
                 .font(.system(size: 60))
-                .foregroundColor(.gray)
+                .foregroundColor(.secondary)
 
             Text("検査履歴がありません")
                 .font(.title2)
 
-            Button(action: {
+            Button {
                 appStateManager.activeScreen = .home
-            }) {
+            } label: {
                 Text("ホームに戻る")
-                    .fontWeight(.semibold)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
             }
-            .padding(.top, 10)
+            .buttonStyle(.compactPrimary)
+            .padding(.top, Spacing.s)
         }
         .padding()
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
@@ -102,14 +97,14 @@ struct HistoryView: View {
                         }
                         Spacer()
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
-                    .padding(.vertical, 4)
+                    .padding(.vertical, Spacing.xs)
                 }
             }
             .onDelete(perform: deleteItem)
         }
-        .foregroundColor(.green)
+        .foregroundColor(AppColor.primary)
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)
 
     }

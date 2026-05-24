@@ -52,14 +52,14 @@ struct TutorialView: View {
 
             TabView(selection: $currentPage) {
                 ForEach(0..<tutorialPages.count, id: \.self) { index in
-                    VStack(spacing: 20) {
+                    VStack(spacing: Spacing.l) {
                         Spacer()
 
                         Image(systemName: tutorialPages[index].image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 120, height: 120)
-                            .foregroundColor(.green)
+                            .foregroundColor(AppColor.primary)
 
                         Text(tutorialPages[index].title)
                             .font(.title)
@@ -78,7 +78,7 @@ struct TutorialView: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
 
-            Button(action: {
+            Button {
                 if currentPage < tutorialPages.count - 1 {
                     withAnimation {
                         currentPage += 1
@@ -86,15 +86,10 @@ struct TutorialView: View {
                 } else {
                     appStateManager.activeScreen = .home
                 }
-            }) {
+            } label: {
                 Text(currentPage < tutorialPages.count - 1 ? "次へ" : "理解しました")
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.green)
-                    .cornerRadius(10)
             }
+            .buttonStyle(.primary)
             .padding()
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility2)

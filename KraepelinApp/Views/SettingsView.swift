@@ -26,7 +26,7 @@ struct SettingsView: View {
     var body: some View {
         GeometryReader { geometry in
             let containerWidth = geometry.size.width * 0.8
-            VStack(spacing: 30) {
+            VStack(spacing: Spacing.xxl) {
                 navigationBar
                 settingsSection(width: containerWidth)
                 descriptionSection(width: containerWidth)
@@ -74,8 +74,8 @@ struct SettingsView: View {
         }
         .frame(width: width)
         .padding()
-        .background(Color.green.opacity(0.1))
-        .cornerRadius(10)
+        .background(AppColor.primaryMuted)
+        .cornerRadius(CornerRadius.m)
     }
 
     // カウンター制御
@@ -102,18 +102,14 @@ struct SettingsView: View {
     private var saveButton: some View {
         Button(action: saveSettings) {
             Text("設定を保存")
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .background(Color.green)
-                .cornerRadius(8)
         }
-        .padding(.top, 10)
+        .buttonStyle(.compactPrimary)
+        .padding(.top, Spacing.s)
     }
 
     // 説明セクション
     private func descriptionSection(width: CGFloat) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: Spacing.m) {
             Text("セット数について")
                 .font(.headline)
 
@@ -123,8 +119,8 @@ struct SettingsView: View {
         }
         .frame(width: width)
         .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(10)
+        .background(AppColor.surfaceMuted)
+        .cornerRadius(CornerRadius.m)
     }
 
     // MARK: - アクション
@@ -164,7 +160,7 @@ struct CounterButton: View {
                 .foregroundColor(color)
                 .font(.title)
         }
-        .padding(20)
+        .padding(Spacing.l)
     }
 }
 

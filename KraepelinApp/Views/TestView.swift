@@ -48,13 +48,13 @@ struct TestView: View {
             // 最終セット完了画面のオーバーレイ
             if showFinalTransition {
                 ZStack {
-                    Color.white.opacity(0.9)
+                    AppColor.background.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
 
                     VStack {
                         Text("やめ")
                             .font(.system(size: 60, weight: .bold))
-                            .foregroundColor(.green)
+                            .foregroundColor(AppColor.primary)
                     }
                 }
                 .transition(.opacity)
@@ -64,9 +64,9 @@ struct TestView: View {
             // 完了画面のオーバーレイ
             if showCompletion, let result = testResult {
                 ZStack {
-                    Color.white.ignoresSafeArea()
+                    AppColor.background.ignoresSafeArea()
 
-                    VStack(spacing: 30) {
+                    VStack(spacing: Spacing.xxl) {
                         Text("検査完了")
                             .font(.largeTitle)
                             .fontWeight(.bold)
@@ -76,26 +76,20 @@ struct TestView: View {
 
                         Text("すべてのセットが完了しました")
                             .font(.headline)
-                            .padding(.bottom, 10)
+                            .padding(.bottom, Spacing.s)
 
                         Text("全体の正答率: \(Int(result.overallAccuracy * 100))%")
                             .font(.title3)
                             .padding()
 
-                        Button("結果を見る") {
-                            // 検査結果を保存
+                        Button {
                             viewModel.saveResult(result)
-
-                            // 詳細画面で参照するIDを先にセットしてから遷移
                             appStateManager.lastResultId = result.id
                             appStateManager.activeScreen = .detail
+                        } label: {
+                            Text("結果を見る")
                         }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 200)
-                        .background(Color.green)
-                        .cornerRadius(10)
+                        .buttonStyle(.compactPrimary)
                     }
                     .padding()
                 }

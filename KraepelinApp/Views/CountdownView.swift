@@ -18,7 +18,7 @@ struct CountdownView: View {
     var body: some View {
         ZStack {
             // 背景色
-            Color.white.edgesIgnoringSafeArea(.all)
+            AppColor.background.edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 30) {
                 Text(showStart ? "" : "検査が始まります")
@@ -40,7 +40,7 @@ struct CountdownView: View {
                 }
             }
             .padding()
-            .foregroundColor(.green)
+            .foregroundColor(AppColor.primary)
             .onAppear {
                 // 数字が拡大・縮小するアニメーション
                 withAnimation(Animation.easeInOut(duration: 0.5).repeatForever()) {

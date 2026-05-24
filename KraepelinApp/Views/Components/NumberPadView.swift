@@ -20,20 +20,20 @@ struct NumberPadView: View {
     ]
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: Spacing.m) {
             ForEach(keyLayout, id: \.self) { row in
-                HStack(spacing: 12) {
+                HStack(spacing: Spacing.m) {
                     ForEach(row, id: \.self) { number in
-                        Button(action: {
+                        Button {
                             onNumberTapped(number)
-                        }) {
+                        } label: {
                             Text("\(number)")
                                 .font(.system(.title, design: .monospaced))
                                 .fontWeight(.medium)
                                 .frame(minWidth: number == 0 ? 220 : 70, minHeight: 70)
-                                .background(Color.green.opacity(0.1))
+                                .background(AppColor.primaryMuted)
                                 .foregroundColor(.primary)
-                                .cornerRadius(10)
+                                .cornerRadius(CornerRadius.m)
                         }
                     }
                 }

@@ -111,20 +111,13 @@ struct DetailView: View {
 
     // ホームに戻るボタン
     private var homeButton: some View {
-        VStack() {
-            Button(action: {
-                appStateManager.activeScreen = .home
-            }) {
-                Text("ホームに戻る")
-                    .fontWeight(.semibold)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .padding(.top, 10)
+        Button {
+            appStateManager.activeScreen = .home
+        } label: {
+            Text("ホームに戻る")
         }
+        .buttonStyle(.compactPrimary)
+        .padding(.top, Spacing.s)
     }
 
     // MARK: - ヘルパーメソッド
@@ -133,9 +126,9 @@ struct DetailView: View {
     /// - Returns: 対応する色
     private func getAccuracyColor(_ accuracy: Double) -> Color {
         switch accuracy {
-        case 0.8...: return .green
-        case 0.6..<0.8: return .yellow
-        default: return .red
+        case 0.8...: return AppColor.success
+        case 0.6..<0.8: return AppColor.warning
+        default: return AppColor.danger
         }
     }
 }

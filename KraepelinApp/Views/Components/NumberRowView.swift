@@ -76,7 +76,7 @@ struct NumberRowView: View {
             ForEach(Array(visibleRange), id: \.self) { columnIndex in
                 Text("\(numbers[columnIndex])")
                     .font(.system(.title, design: .monospaced))
-                    .foregroundColor(.green)
+                    .foregroundColor(AppColor.primary)
                     .frame(width: numberWidth, height: numberHeight)
                     .multilineTextAlignment(.center)
             }
@@ -103,13 +103,13 @@ struct NumberRowView: View {
                         // 解答テキスト
                         Text("\(answers[columnIndex]!)")
                             .font(.system(.title2, design: .monospaced))
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
                             .frame(width: numberWidth, height: answerHeight)
                             .multilineTextAlignment(.center)
                     } else if isCurrentRow && columnIndex == currentColumnIndex {
                         // マーカー（解答がない場合のみ表示）
                         Circle()
-                            .fill(Color.red)
+                            .fill(AppColor.danger)
                             .frame(width: 8, height: 8)
                     }
                 }

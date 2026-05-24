@@ -11,11 +11,11 @@ struct TestStartView: View {
     @EnvironmentObject var appStateManager: AppStateManager
 
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: Spacing.xxl) {
             HStack {
-                Button(action: {
+                Button {
                     appStateManager.activeScreen = .home
-                }) {
+                } label: {
                     HStack {
                         Image(systemName: "chevron.left")
                         Text("戻る")
@@ -32,13 +32,13 @@ struct TestStartView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 80, height: 80)
-                .foregroundColor(.orange)
+                .foregroundColor(AppColor.alert)
 
             Text("検査を開始します")
                 .font(.title)
                 .fontWeight(.bold)
 
-            VStack(alignment: .leading, spacing: 15) {
+            VStack(alignment: .leading, spacing: Spacing.l) {
                 NoticeRow(
                     icon: "iphone.and.arrow.forward",
                     title: "中断禁止",
@@ -58,22 +58,17 @@ struct TestStartView: View {
                 )
             }
             .padding()
-            .background(Color.green.opacity(0.1))
-            .cornerRadius(10)
+            .background(AppColor.primaryMuted)
+            .cornerRadius(CornerRadius.m)
             .padding(.horizontal)
             .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
-            Button(action: {
+            Button {
                 appStateManager.activeScreen = .countdown
-            }) {
+            } label: {
                 Text("検査を開始する")
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.green)
-                    .cornerRadius(10)
             }
+            .buttonStyle(.primary)
             .padding(.horizontal)
             .padding(.bottom)
 
@@ -89,12 +84,12 @@ struct NoticeRow: View {
     let description: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 15) {
+        HStack(alignment: .top, spacing: Spacing.l) {
             Image(systemName: icon)
-                .foregroundColor(.green)
+                .foregroundColor(AppColor.primary)
                 .frame(width: 24, height: 24)
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: Spacing.xs) {
                 Text(title)
                     .font(.headline)
 

@@ -10,13 +10,13 @@ import SwiftUI
 struct SetTransitionView: View {
     var body: some View {
         ZStack {
-            Color.white.opacity(0.9)
+            AppColor.background.opacity(0.9)
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
                 Text("次")
                     .font(.system(size: 60, weight: .bold))
-                    .foregroundColor(.green)
+                    .foregroundColor(AppColor.primary)
             }
         }
     }
