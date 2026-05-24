@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 /// アプリの画面状態を表す列挙型
 enum AppScreen {
@@ -34,18 +33,6 @@ enum AppScreen {
     }
 }
 
-/// テスト結果の保存インターフェース
-protocol TestResultStorage {
-    func saveTestResult(_ result: TestResult)
-}
-
-/// UserDefaultsを使用したテスト結果の保存実装
-class UserDefaultsResultStorage: TestResultStorage {
-    func saveTestResult(_ result: TestResult) {
-        UserDefaultsManager.shared.addTestResult(result)
-    }
-}
-
 /// アプリの状態管理を担当するクラス
 class AppStateManager: ObservableObject {
     /// シングルトンインスタンス
@@ -56,50 +43,4 @@ class AppStateManager: ObservableObject {
 
     /// 詳細表示する検査結果のID
     @Published var lastResultId: UUID?
-
-    /// 保存待ちの検査結果
-    private var pendingTestResult: TestResult?
-
-    /// テスト結果の保存を担当するストレージ
-    private let resultStorage: TestResultStorage
-
-    /// イニシャライザ
-    /// - Parameter storage: テスト結果ストレージ（デフォルトはUserDefaultsResultStorage）
-    init(storage: TestResultStorage = UserDefaultsResultStorage()) {
-        self.resultStorage = storage
-    }
-
-    /// ホーム画面に戻る
-    /// 保存待ちの検査結果があれば保存してからホーム画面に遷移する
-    func returnToHome() {
-        savePendingResultIfNeeded()
-        activeScreen = .home
-    }
-
-    /// 保存待ちの検査結果があれば保存する
-    private func savePendingResultIfNeeded() {
-        if let result = pendingTestResult {
-            resultStorage.saveTestResult(result)
-            pendingTestResult = nil
-        }
-    }
-
-    /// テスト結果を保存予約する
-    /// - Parameter result: 保存するテスト結果
-    func saveTestResult(_ result: TestResult) {
-        pendingTestResult = result
-    }
-
-    /// 詳細表示する検査結果のIDを設定し、詳細画面に遷移する
-    /// - Parameter resultId: 表示する検査結果のID
-    func showResultDetails(for resultId: UUID) {
-        lastResultId = resultId
-        activeScreen = .detail
-    }
-
-    /// 指定した画面に遷移する
-    /// - Parameter screen: 遷移先の画面
-    func navigateTo(_ screen: AppScreen) {
-        activeScreen = screen
-    }
 }

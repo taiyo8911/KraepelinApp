@@ -7,7 +7,6 @@
 
 
 import SwiftUI
-import Charts
 
 struct DetailView: View {
     // MARK: - プロパティ
@@ -17,8 +16,6 @@ struct DetailView: View {
     var isModal: Bool = false
 
     @EnvironmentObject var appStateManager: AppStateManager
-
-    @Environment(\.dismiss) var dismiss
 
     let testResult: TestResult
 
@@ -56,17 +53,6 @@ struct DetailView: View {
     }
 
     // MARK: - コンポーネント
-    // 戻るボタン
-    private var backButton: some View {
-        Button(action: { dismiss() }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                Text("戻る")
-            }
-        }
-        .padding(.bottom, 8)
-        .dynamicTypeSize(...maxDynamicTypeSize)
-    }
 
     // 検査基本情報セクション
     private var testSummarySection: some View {

@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 /// クレペリン検査のビジネスロジックを管理するViewModel
 class TestViewModel: ObservableObject {

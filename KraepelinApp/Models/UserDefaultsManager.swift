@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 /// アプリケーション全体の永続化データを管理するクラス
 class UserDefaultsManager: ObservableObject {
